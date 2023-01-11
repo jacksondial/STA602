@@ -100,6 +100,7 @@ The histogram cannot be correct because there are a few observations with negati
 rain.df_cleaned <- rain.df %>% filter(daily >= 0)
 ```
 
+I used the _filter()_ command.
 
 ### K
 
@@ -111,4 +112,40 @@ ggplot(rain.df_cleaned, aes(x = daily))+
 
 This is more reasonable than the other histogram because it only includes positive or 0 values.
 
+## Q2
 
+### A
+
+The _x <- c("5","12","7")_ command works because we are just creating a vector of the 3 arguments in the concatenate function.
+
+The _max()_ function works but does not give the correct output because the values in the vector are characters, and thus mathematical operations are not correctly applied to them. The 7 is output because it is the last value in the vector.
+
+The _sort()_ function does sort the values, but again they are as characters and thus sorts based off of the first character in the string, essentially like alphabetical order but with numbers.
+
+The _sum()_ function does not work because it is a direct mathematical computation but the values are still characters and thus cannot be used in mathematical operations.
+
+### B
+
+The _y <- c("5",7,12)_ command does work, but only 1 data type is allowed for the vector which is set by the first argument in the function. Thus, all values are saved as character type.
+
+The _y[2] + y[3]_ command does not work because again, mathematical operations cannot be applied to character objects.
+
+### C
+
+The _z <- data.frame(z1="5",z2=7,z3=12)_ command works because we are just assigning values to a dataframe and specifying columns and values in those columns.
+
+The _z[1,2] + z[1,3]_ operation works correctly by adding the values in the first row, second and third columns together. They are both numeric data types.
+
+## Q3
+
+### A
+
+The point of reproducible code is to allow for others to easily use the code you wrote to either attempt to solidify your findings by replicating it, or to understand what you did in order to use it in a similar or different way.
+
+### B
+
+In my desired career of a data scientist, it will be important to be able to look back at certain techniques or models that I coded during my studies, and understand why I did certain things or what types of questions I can answer with certain types of models.
+
+### C
+
+3
