@@ -1,0 +1,63 @@
+---
+title: "HW1"
+author: "Jackson Dial"
+date: '2023-01-11'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+_Working with data_
+
+## Q1
+
+```{r}
+rain.df <- read.table("HW1_data/rnf6080.dat.txt") 
+# rain.df1 <- read.table("HW1_data/rnf6080.dat.txt", header = TRUE) #I think the header statement messes it up
+```
+
+### A
+
+I used the _read.table()_ function to read in the data.
+
+### B
+
+```{r}
+dim(rain.df)
+```
+
+There are 5070 rows and 27 columns. I used the _dim()_ function to find the length and width of the data frame.
+
+### C
+
+```{r}
+colnames(rain.df)
+```
+
+To get the names of the columns, I used the _colnames()_ function, and they are named with 'V' followed by the index of the column (1:27).
+
+### D
+
+```{r}
+rain.df[2,4]
+```
+I indexed the value by specifying the row number and column number inside brackets.
+
+### E
+
+```{r}
+rain.df[2,]
+```
+
+I uses the same function as before, the brackets, but left the column argument blank as to indicate I want every column, while specifying the row.
+
+### F
+
+```{r}
+names(rain.df) <- c("year","month","day",seq(0,23))
+```
+
+This function replaces the column names with the strings "year", "month", and "day", followed by the sequence of numbers 0:23.
+
