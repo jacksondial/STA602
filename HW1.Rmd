@@ -3,11 +3,18 @@ title: "HW1"
 author: "Jackson Dial"
 date: '2023-01-11'
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+```{r}
+library(tidyverse)
+```
+
 
 _Working with data_
 
@@ -16,7 +23,11 @@ _Working with data_
 ```{r}
 rain.df <- read.table("HW1_data/rnf6080.dat.txt") 
 # rain.df1 <- read.table("HW1_data/rnf6080.dat.txt", header = TRUE) #I think the header statement messes it up
+# rain.df2 <- read.table(url("homeworks/homework-1/data/rnf6080.dat"))
 ```
+
+
+
 
 ### A
 
@@ -60,4 +71,44 @@ names(rain.df) <- c("year","month","day",seq(0,23))
 ```
 
 This function replaces the column names with the strings "year", "month", and "day", followed by the sequence of numbers 0:23.
+
+### G
+
+```{r}
+rain.df <- rain.df %>%
+  mutate(
+    daily = rowSums(across(4:23))
+  )
+```
+
+
+### H
+
+```{r}
+ggplot(rain.df, aes(x = daily))+
+  geom_histogram()+
+  theme(panel.grid.minor = element_blank())
+```
+
+### I
+
+The histogram cannot be correct because there are a few observations with negative values for rainfall, which is not possible.
+
+### J
+
+```{r}
+rain.df_cleaned <- rain.df %>% filter(daily >= 0)
+```
+
+
+### K
+
+```{r}
+ggplot(rain.df_cleaned, aes(x = daily))+
+  geom_histogram()+
+  theme(panel.grid.minor = element_blank())
+```
+
+This is more reasonable than the other histogram because it only includes positive or 0 values.
+
 
