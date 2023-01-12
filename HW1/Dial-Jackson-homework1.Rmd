@@ -21,7 +21,7 @@ _Working with data_
 ## Q1
 
 ```{r}
-rain.df <- read.table("HW1_data/rnf6080.dat.txt") 
+rain.df <- read.table("rnf6080.dat.txt")
 # rain.df1 <- read.table("HW1_data/rnf6080.dat.txt", header = TRUE) #I think the header statement messes it up
 # rain.df2 <- read.table(url("homeworks/homework-1/data/rnf6080.dat"))
 ```
