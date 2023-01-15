@@ -1,0 +1,50 @@
+---
+title: "Dial-Jackson-homework2"
+author: "Jackson Dial"
+date: '2023-01-15'
+output: pdf_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Q1
+
+## Task 3
+
+## Task 4
+
+## Task 5
+
+# Q2
+
+## A
+
+_Insert image here_
+
+## B
+
+The posterior is a proper pdf because it has the form of a known distributino, the Gamma distribution.
+
+## C
+
+```{r}
+#sum of all data = 154.5
+n <- 8
+
+a <- .1
+b <- 1
+th <- seq(0,1, length = 500)
+
+x <- 154.5 #not sure if this is actually correct
+
+
+like <- dgamma(th, n + .1, x - 1)
+prior <- dgamma(th, a, b)
+post <- dgamma(th, n+a, x-b)
+
+plot(th, like, type = "l", ylab = "Density", lty = 3, lwd = 3, xlab = expression(theta))
+```
+
+
+
+
