@@ -11,9 +11,89 @@ editor_options:
 
 ## Task 3
 
+```{r}
+myBernLH <- function(obs_data, theta){
+  N <- length(obs_data)
+  x <- sum(obs_data)
+  LH <- (theta^x)* ((1-theta)^(N-x))
+  return(LH)
+}
+
+#create grid
+theta_sim <- seq(0, 1, length=1000)
+#store the LH values
+sim_lh <- myBernLH(obs_data, theta_sim)
+#create the plot
+head(theta_sim)
+tail(sim_lh)
+plot(theta_sim, sim_lh, type = "l", main = "Likelihood Profile", xlab = "Simulated Support", ylab = "Likelihood")
+```
+
+
 ## Task 4
 
+```{r}
+set.seed(1234)
+
+obs_data <- rbinom(n = 100, size = 1, prob = .01)
+
+BetaBernMod <- function(a,b,data){
+  sum_data <- sum(data)
+  n <- length(data)
+  a1 <- sum_data + a
+  b1 <- n - sum_data + b
+  return (c(a1, b1))
+}
+
+BetaBernMod(1,1,obs_data)
+BetaBernMod(3,1,obs_data)
+```
+
+
 ## Task 5
+
+```{r}
+set.seed(1234)
+obs_data <- rbinom(n = 100, size = 1, prob = .01)
+theta_sim <- seq(0, 1, length=1000)
+myBernLH <- function(data, theta){
+  N <- length(data)
+  x <- sum(data)
+  LH <- (theta^x)* ((1-theta)^(N-x))
+  return(LH)
+}
+like <- myBernLH(obs_data, theta_sim)
+
+BernPDF <- function(data, theta, a, b){
+  N <- length(data)
+  x <- sum(data)
+  pdf <- (theta^x)* ((a-theta)^(b-x))
+  return(pdf)
+}
+
+posterior <- function(data, theta, a, b){
+  parameters <- BetaBernMod(a,b,obs_data)
+  post_fun <- BernPDF(obs_data, theta, parameters[1], parameters[2])
+  return(post_fun)
+}
+
+
+
+non_prior <- BernPDF(obs_data, theta_sim, 1, 1)
+non_post <- posterior(obs_data, theta_sim, 1, 1)
+
+info_prior <- BernPDF(obs_data, theta_sim, 3,1)
+info_post <- posterior(obs_data, theta_sim, 3, 1)
+
+plot(theta_sim, like, type = "l", col = "red", lwd = 2)
+lines(theta_sim, non_prior, type = "l", lwd = 2, col = "blue")
+lines(theta_sim, non_post, type = "l", lwd = 2, col = "green")
+
+plot(theta_sim, like, type = "l", col = "red", lwd = 2)
+lines(theta_sim, info_prior, type = "l", lwd = 2, col = "blue")
+lines(theta_sim, info_post, type = "l", lwd = 2, col = "green")
+```
+
 
 # Q2
 
@@ -23,7 +103,7 @@ _Insert image here_
 
 ## B
 
-The posterior is a proper pdf because it has the form of a known distributino, the Gamma distribution.
+The posterior is a proper pdf because it has the form of a known distribution, the Gamma distribution.
 
 ## C
 

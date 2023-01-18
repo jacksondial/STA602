@@ -1,0 +1,43 @@
+---
+title: "Lab1"
+author: "Jackson Dial"
+date: '2023-01-17'
+output: html_document
+---
+
+# Task 2
+
+```{r}
+set.seed(123)
+
+obs_data <- rbinom(n = 100, size = 1, prob = .01)
+head(obs_data)
+tail(obs_data)
+length(obs_data)
+sum(obs_data)
+```
+
+# Task 3
+
+```{r}
+myBernLH <- function(obs_data, theta){
+  N <- length(obs_data)
+  x <- sum(obs_data)
+  LH <- (theta^x)* ((1-theta)^(N-x))
+  return(LH)
+}
+
+#create grid
+theta_sim <- seq(0, 1, length=1000)
+#store the LH values
+sim_lh <- myBernLH(obs_data, theta_sim)
+#create the plot
+head(theta_sim)
+tail(sim_lh)
+plot(theta_sim, sim_lh, type = "l", main = "Likelihood Profile", xlab = "Simulated Support", ylab = "Likelihood")
+```
+
+
+# Task 4
+
+# Task 5
