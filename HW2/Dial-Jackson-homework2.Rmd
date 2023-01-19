@@ -9,7 +9,9 @@ editor_options:
 
 # Q1
 
-## Task 3
+## A
+
+### Task 3
 
 ```{r}
 myBernLH <- function(obs_data, theta){
@@ -29,8 +31,9 @@ tail(sim_lh)
 plot(theta_sim, sim_lh, type = "l", main = "Likelihood Profile", xlab = "Simulated Support", ylab = "Likelihood")
 ```
 
+## B
 
-## Task 4
+### Task 4
 
 ```{r}
 set.seed(1234)
@@ -49,8 +52,9 @@ BetaBernMod(1,1,obs_data)
 BetaBernMod(3,1,obs_data)
 ```
 
+## C
 
-## Task 5
+### Task 5
 
 ```{r}
 set.seed(1234)
@@ -61,27 +65,28 @@ n <- length(obs_data)
 x <- sum(obs_data)
 like <- dbeta(theta, x +1, n-x+1)
 
-
+#make the non informative distributions
 parameters_non <- BetaBernMod(1,1,obs_data)
 non_prior <- dbeta(theta, 1,1)
 non_post <- dbeta(theta, parameters_non[1], parameters_non[2])
 
+#make the informative distributions
 parameters_info <- BetaBernMod(3,1,obs_data)
 info_prior <- dbeta(theta, 3,1)
 info_post <- dbeta(theta, parameters_info[1], parameters_info[2])
 
-
+#plot all 3 with the non informative prior
 plot(theta_sim, like, type = "l", col = "red", lwd = 2)
 lines(theta_sim, non_prior, type = "l", lwd = 2, col = "blue")
 lines(theta_sim, non_post, type = "l", lty = 2, lwd = 2, col = "green")
 legend(.5, 30, legend = c("Likelihood", "Prior", "Posterior"), col = c("red", "blue", "green"), lty = c(1,1,2), lwd = c(2,2,2))
 
+#plot them all together with the informative prior
 plot(theta_sim, like, type = "l", col = "red", lwd = 2)
 lines(theta_sim, info_prior, type = "l", lwd = 2, col = "blue")
 lines(theta_sim, info_post, type = "l", lwd = 2, col = "green")
 legend(.5, 30, legend = c("Likelihood", "Prior", "Posterior"), col = c("red", "blue", "green"), lty = c(1,1,1), lwd = c(2,2,2))
 ```
-
 
 # Q2
 
@@ -101,28 +106,74 @@ n <- 8
 
 a <- .1
 b <- 1
-th <- seq(0,1, length = 500)
+th <- seq(0, 1, length = 500)
 
 x <- 154.5 #not sure if this is actually correct
 
-
-like <- (th^n)*exp(-th*x)
+like <- (th ^ n) * exp(-th * x)
 prior <- dgamma(th, a, b)
-post <- dgamma(th, n+a, x-b)
+post <- dgamma(th, n + a, x - b)
 
 #plot the likelihood function
-plot(th, like, type = "l", ylab = "Density", lty = 3, lwd = 3, xlab = expression(theta))
+plot(
+  th,
+  like,
+  type = "l",
+  ylab = "Density",
+  lty = 3,
+  lwd = 3,
+  xlab = expression(theta)
+)
 
 #plot the prior distribution
-plot(th, prior, type = "l", ylab = "Density", lty = 3, lwd = 3, xlab = expression(theta))
+plot(
+  th,
+  prior,
+  type = "l",
+  ylab = "Density",
+  lty = 3,
+  lwd = 3,
+  xlab = expression(theta)
+)
 
 #plot the posterior distribution
-plot(th, post, type = "l", ylab = "Density", lty = 3, lwd = 3, xlab = expression(theta))
+plot(
+  th,
+  post,
+  type = "l",
+  ylab = "Density",
+  lty = 3,
+  lwd = 3,
+  xlab = expression(theta)
+)
 
 #plot the prior and posterior together
-plot(th, prior, col = "blue", type = "l", ylab = "Density", lty = 3, lwd = 3, xlab = expression(theta))
-lines(th, post, col = "red", type = "l", lty = 3, lwd = 3)
-legend(0.5, 20, legend = c("Prior", "Posterior"), col = c("blue", "red"), lwd = c(3,3), lty = c(3,3))
+plot(
+  th,
+  prior,
+  col = "blue",
+  type = "l",
+  ylab = "Density",
+  lty = 3,
+  lwd = 3,
+  xlab = expression(theta)
+)
+lines(
+  th,
+  post,
+  col = "red",
+  type = "l",
+  lty = 3,
+  lwd = 3
+)
+legend(
+  0.5,
+  20,
+  legend = c("Prior", "Posterior"),
+  col = c("blue", "red"),
+  lwd = c(3, 3),
+  lty = c(3, 3)
+)
 ```
 
 
@@ -132,3 +183,25 @@ legend(0.5, 20, legend = c("Prior", "Posterior"), col = c("blue", "red"), lwd = 
 An exponential model is typically used to model the expected time until an event occurs. This event could be the time from now until the next hurricane strikes Florida. 
 
 An exponential model would not be a good fit for something like the number of times that an individual will experience a hurricane in his/her/their lifetime.
+
+# Q3
+
+## A
+
+_Insert image here_
+
+```{r}
+#plot galenshore
+dgalenshore <- function(x, a, theta){
+  return ((2/gamma(a)) * theta^(2 * a) * exp(-theta^2 * x^2))
+}
+x <- seq(0.01, 3, 0.01)
+plot(x, dgalenshore(x, 1, 1), type = "l", ylab = "Galenshore Density(x)", col = "black", 
+    ylim = c(0, 5), lwd = 2)
+lines(x, dgalenshore(x, 1, 1.5), type = "l", col = "red", lwd = 2, lty = 2)
+lines(x, dgalenshore(x, 3, 1), type = "l", col = "blue", lwd = 2, lty = 3)
+legend("topright", c("Galenshore(1,1)", "Galenshore(1,2)", "Galenshore(3,1)"), 
+    col = c("black", "red", "blue"), lwd = c(2, 2, 2), lty = c(1, 2, 3))
+
+```
+
