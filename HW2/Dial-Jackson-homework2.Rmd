@@ -56,42 +56,30 @@ BetaBernMod(3,1,obs_data)
 set.seed(1234)
 obs_data <- rbinom(n = 100, size = 1, prob = .01)
 theta_sim <- seq(0, 1, length=1000)
-myBernLH <- function(data, theta){
-  N <- length(data)
-  x <- sum(data)
-  LH <- (theta^x)* ((1-theta)^(N-x))
-  return(LH)
-}
-like <- myBernLH(obs_data, theta_sim)
 
-BernPDF <- function(data, theta, a, b){
-  N <- length(data)
-  x <- sum(data)
-  pdf <- (theta^x)* ((a-theta)^(b-x))
-  return(pdf)
-}
-
-posterior <- function(data, theta, a, b){
-  parameters <- BetaBernMod(a,b,obs_data)
-  post_fun <- BernPDF(obs_data, theta, parameters[1], parameters[2])
-  return(post_fun)
-}
+n <- length(obs_data)
+x <- sum(obs_data)
+like <- dbeta(theta, x +1, n-x+1)
 
 
+parameters_non <- BetaBernMod(1,1,obs_data)
+non_prior <- dbeta(theta, 1,1)
+non_post <- dbeta(theta, parameters_non[1], parameters_non[2])
 
-non_prior <- BernPDF(obs_data, theta_sim, 1, 1)
-non_post <- posterior(obs_data, theta_sim, 1, 1)
+parameters_info <- BetaBernMod(3,1,obs_data)
+info_prior <- dbeta(theta, 3,1)
+info_post <- dbeta(theta, parameters_info[1], parameters_info[2])
 
-info_prior <- BernPDF(obs_data, theta_sim, 3,1)
-info_post <- posterior(obs_data, theta_sim, 3, 1)
 
 plot(theta_sim, like, type = "l", col = "red", lwd = 2)
 lines(theta_sim, non_prior, type = "l", lwd = 2, col = "blue")
-lines(theta_sim, non_post, type = "l", lwd = 2, col = "green")
+lines(theta_sim, non_post, type = "l", lty = 2, lwd = 2, col = "green")
+legend(.5, 30, legend = c("Likelihood", "Prior", "Posterior"), col = c("red", "blue", "green"), lty = c(1,1,2), lwd = c(2,2,2))
 
 plot(theta_sim, like, type = "l", col = "red", lwd = 2)
 lines(theta_sim, info_prior, type = "l", lwd = 2, col = "blue")
 lines(theta_sim, info_post, type = "l", lwd = 2, col = "green")
+legend(.5, 30, legend = c("Likelihood", "Prior", "Posterior"), col = c("red", "blue", "green"), lty = c(1,1,1), lwd = c(2,2,2))
 ```
 
 
