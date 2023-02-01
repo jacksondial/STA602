@@ -1,0 +1,99 @@
+---
+title: "Dial-Jackson-homework4"
+author: "Jackson Dial"
+date: '2023-01-31'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Q1
+
+# Q2
+
+## Task 4
+
+```{r}
+#set seed for reproducibility
+set.seed(123)
+
+# spurters
+x = c(18, 40, 15, 17, 20, 44, 38)
+
+# control group
+y = c(-4, 0, -19, 24, 19, 10, 5, 10,
+      29, 13, -9, -8, 20, -1, 12, 21,
+      -7, 14, 13, 20, 11, 16, 15, 27,
+      23, 36, -33, 34, 13, 11, -19, 21,
+      6, 25, 30,22, -28, 15, 26, -1, -2,
+      43, 23, 22, 25, 16, 10, 29)
+
+# store data in data frame 
+iqData = data.frame(Treatment = c(rep("Spurters", length(x)), 
+                                  rep("Controls", length(y))),
+                                  Gain = c(x, y))
+```
+
+
+```{r}
+prior = data.frame(m = 0, c = 1, a = 0.5, b = 50)
+findParam = function(prior, data){
+  postParam = NULL
+  c = prior$c
+  m = prior$m
+  a = prior$a
+  b = prior$b
+  n = length(data)
+  postParam = data.frame(m = (c*m + n*mean(data))/(c + n), 
+                c = c + n, 
+                a = a + n/2, 
+                b =  b + 0.5*(sum((data - mean(data))^2)) + 
+                  (n*c *(mean(data)- m)^2)/(2*(c+n)))
+  return(postParam)
+}
+# Find parameters for each of the distributions we are wanting to pull from
+postS = findParam(prior, x)
+postC = findParam(prior, y)
+
+# library(lestat)
+# postDistS <- normalgamma(postS[1], postS[2], postS[3], postS[4])
+# 
+# sample(postDistS, size = 10)
+# 
+# plot(normalgamma(3,4,5,6))
+```
+
+```{r}
+rnormgamma <- function(n, mu, lambda, alpha, beta) {
+  if (length(n) > 1) 
+    n <- length(n)
+  tau <- rgamma(n, alpha, beta)
+  x <- rnorm(n, mu, sqrt(1/(lambda*tau)))
+  data.frame(tau = tau, x = x)
+}
+set.seed(456)
+postSsamps <- rnormgamma(1000000,postS[,1], postS[,2], postS[,3], postS[,4])
+postCsamps <- rnormgamma(1000000,postC[,1], postC[,2], postC[,3], postC[,4])
+names(postSsamps) <- c("S_tau", "S_x")
+names(postCsamps) <- c("C_tau", "C_x")
+
+library(tidyverse)
+all_x <- cbind(postSsamps, postCsamps)
+
+final <- all_x %>% 
+  mutate(s_greater_c = case_when(
+    S_x > C_x ~ 1,
+    TRUE ~ 0
+  ))
+
+posterior_prob <- mean(final$s_greater_c)
+#The posterior probability is 0.97069
+```
+
+
+
+
+
+## Task 5
