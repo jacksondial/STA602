@@ -93,7 +93,16 @@ posterior_prob <- mean(final$s_greater_c)
 ```
 
 
+This means the probability of the mean QI for spurters has a 97% probability of being higher than the mean QI score for the control group.
+
+__Interpret__
 
 
 
 ## Task 5
+
+```{r}
+
+
+```
+
