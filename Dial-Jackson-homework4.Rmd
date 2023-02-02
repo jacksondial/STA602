@@ -3,6 +3,8 @@ title: "Dial-Jackson-homework4"
 author: "Jackson Dial"
 date: '2023-01-31'
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,6 +18,8 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Task 4
 
 ```{r}
+library(tidyverse)
+
 #set seed for reproducibility
 set.seed(123)
 
@@ -66,6 +70,7 @@ postC = findParam(prior, y)
 ```
 
 ```{r}
+set.seed(456)
 rnormgamma <- function(n, mu, lambda, alpha, beta) {
   if (length(n) > 1) 
     n <- length(n)
@@ -73,13 +78,14 @@ rnormgamma <- function(n, mu, lambda, alpha, beta) {
   x <- rnorm(n, mu, sqrt(1/(lambda*tau)))
   data.frame(tau = tau, x = x)
 }
-set.seed(456)
+
+
+
 postSsamps <- rnormgamma(1000000,postS[,1], postS[,2], postS[,3], postS[,4])
 postCsamps <- rnormgamma(1000000,postC[,1], postC[,2], postC[,3], postC[,4])
 names(postSsamps) <- c("S_tau", "S_x")
 names(postCsamps) <- c("C_tau", "C_x")
 
-library(tidyverse)
 all_x <- cbind(postSsamps, postCsamps)
 
 final <- all_x %>% 
@@ -89,20 +95,33 @@ final <- all_x %>%
   ))
 
 posterior_prob <- mean(final$s_greater_c)
-#The posterior probability is 0.97069
+#The posterior probability is 0.970645
 ```
 
 
 This means the probability of the mean QI for spurters has a 97% probability of being higher than the mean QI score for the control group.
 
-__Interpret__
-
-
-
 ## Task 5
 
 ```{r}
-
-
+#Priors are also Normal-Gamma
+library(tictoc)
+set.seed(789)
+prior_df_loop <- data.frame()
+tic()
+for(i in 1:1000){
+  prior_samps <- rnormgamma(1000, 0, 1, .5, 50)[,2]
+  prior_mean <- mean(prior_samps)
+  prior_sd <- sd(prior_samps)
+  prior_row <- cbind(prior_mean, prior_sd)
+  prior_df_loop <- rbind(prior_df_loop, prior_row)
+}
+toc()
+ggplot(prior_df_loop,aes(x = prior_mean, y = prior_sd))+
+  geom_point()+
+  xlim(-50,50)+
+  ylim(0,400)
 ```
 
+
+It looks like the mean is about 0 and the standard deviation is likely between 20 and 100
