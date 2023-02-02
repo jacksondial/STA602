@@ -11,14 +11,37 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+library(tidyverse)
+```
+
+
 # Q1
+
+## A
+
+```{r}
+x <- -15:15
+y <- (exp(x) / (exp(x) + 1)^2)
+dat <- cbind.data.frame(x,y)
+ggplot(dat, aes(x = x, y = y))+
+  geom_line()+
+  theme(panel.grid.minor = element_blank())
+```
+
+
+## B
+
+```{r}
+
+```
+
 
 # Q2
 
 ## Task 4
 
 ```{r}
-library(tidyverse)
 
 #set seed for reproducibility
 set.seed(123)
