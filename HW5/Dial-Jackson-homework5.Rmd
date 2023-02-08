@@ -144,21 +144,20 @@ The acceptance ratios are 0.7 and 0.75, respectively. These are not great but it
 I would recommend using the Beta distribution because the acceptance rate is much higher using that compared to the uniform distribution, thus being less wasteful in regards to computational complexity.I would try a Beta distribution with different parameter values, because I believe the (2,2) parameter values were just arbitrarily chosen.
 
 ```{r}
-g2=function(x){ return(dbeta(x,3,3)) }
-rg2=function(n){ return(rbeta(n,3,3)) }
+set.seed(2158221)
+g3=function(x){ return(dbeta(x,3,3)) }
+rg3=function(n){ return(rbeta(n,3,3)) }
 
 N=10^5
 xx=(1:(N-1))/N
-a2=min(g2(xx)/f(xx))
+a3=min(g3(xx)/f(xx))
 
-f2=function(x){ return(a2*f(x)) }
+f3=function(x){ return(a3*f(x)) }
 ```
-
-
 
 ```{r}
 N=10^5
-S=rej_sampl(N,f2,g2,rg2)
+S=rej_sampl(N,f3,g3,rg3)
 
 length(S)/N
 ggplot()+
@@ -167,4 +166,3 @@ ggplot()+
   xlim(0,1)+xlab("X")+ylab("Density")+
   theme_bw()
 ```
-
