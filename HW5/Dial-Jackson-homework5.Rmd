@@ -76,7 +76,7 @@ rej_sampl=function(N,f,g,rg){
 N=10^2
 S=rej_sampl(N,f1,g1,rg1)
 
-length(S)
+length(S)/N
 ggplot()+
   geom_density(aes(x=S))+
   geom_function(fun=f,col="blue")+
@@ -88,7 +88,7 @@ ggplot()+
 N=10^5
 S=rej_sampl(N,f1,g1,rg1)
 
-length(S)
+length(S)/N
 ggplot()+
   geom_density(aes(x=S))+
   geom_function(fun=f,col="blue")+
@@ -96,6 +96,7 @@ ggplot()+
   theme_bw()
 ```
 
+The acceptance ratios for each of these are 0.58.
 
 ```{r}
 g2=function(x){ return(dbeta(x,2,2)) }
@@ -110,6 +111,7 @@ f2=function(x){ return(a2*f(x)) }
 
 
 ```{r}
+set.seed(987)
 N=10^2
 S=rej_sampl(N,f2,g2,rg2)
 
@@ -133,10 +135,36 @@ ggplot()+
   theme_bw()
 ```
 
-The acceptance ratios are 0.72 and 0.75, respectively. These are not great but it does show that 
+The acceptance ratios are 0.7 and 0.75, respectively. These are not great but it does show that the higher the N, the higher percentage of acceptance for or region.
 
 \pagebreak
 
 ## Task 5
 
+I would recommend using the Beta distribution because the acceptance rate is much higher using that compared to the uniform distribution, thus being less wasteful in regards to computational complexity.I would try a Beta distribution with different parameter values, because I believe the (2,2) parameter values were just arbitrarily chosen.
+
+```{r}
+g2=function(x){ return(dbeta(x,3,3)) }
+rg2=function(n){ return(rbeta(n,3,3)) }
+
+N=10^5
+xx=(1:(N-1))/N
+a2=min(g2(xx)/f(xx))
+
+f2=function(x){ return(a2*f(x)) }
+```
+
+
+
+```{r}
+N=10^5
+S=rej_sampl(N,f2,g2,rg2)
+
+length(S)/N
+ggplot()+
+  geom_density(aes(x=S))+
+  geom_function(fun=f,col="blue")+
+  xlim(0,1)+xlab("X")+ylab("Density")+
+  theme_bw()
+```
 
