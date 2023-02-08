@@ -1,0 +1,142 @@
+---
+title: "Dial-Jackson-homework5"
+author: "Jackson Dial"
+date: '2023-02-07'
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+```
+
+
+# Q1
+
+## A
+
+\pagebreak
+
+## B
+
+\pagebreak
+
+## C
+
+\pagebreak
+
+# Q2
+
+## Task 4
+
+```{r}
+f=function(x){ return(2*(sin(pi*x))^2) }
+g1=function(x){ return(dunif(x,0,1)) }
+rg1=function(n){ return(rbeta(n,2,2)) }
+
+N=10^5
+xx=(1:(N-1))/N
+a1=min(g1(xx)/f(xx))
+
+f1=function(x){ return(a1*f(x)) }
+```
+
+
+```{r}
+X = rg1(N)
+Y = runif(N, min=0, max=g1(X))
+acc=(Y<f1(X))
+Xaccepted=X[acc]
+Yaccepted=Y[acc]
+Xrejected=X[!acc]
+Yrejected=Y[!acc]
+```
+
+
+```{r}
+#rej_sampl function
+
+rej_sampl=function(N,f,g,rg){
+  X = rg(N)
+  Y = runif(N, min=0, max=g(X))
+  acc=(Y<f(X))
+  Xaccepted=X[acc]
+  return(Xaccepted)
+}
+```
+
+
+
+```{r}
+N=10^2
+S=rej_sampl(N,f1,g1,rg1)
+
+length(S)
+ggplot()+
+  geom_density(aes(x=S))+
+  geom_function(fun=f,col="blue")+
+  xlim(0,1)+xlab("X")+ylab("Density")+
+  theme_bw()
+```
+
+```{r}
+N=10^5
+S=rej_sampl(N,f1,g1,rg1)
+
+length(S)
+ggplot()+
+  geom_density(aes(x=S))+
+  geom_function(fun=f,col="blue")+
+  xlim(0,1)+xlab("X")+ylab("Density")+
+  theme_bw()
+```
+
+
+```{r}
+g2=function(x){ return(dbeta(x,2,2)) }
+rg2=function(n){ return(rbeta(n,2,2)) }
+
+N=10^5
+xx=(1:(N-1))/N
+a2=min(g2(xx)/f(xx))
+
+f2=function(x){ return(a2*f(x)) }
+```
+
+
+```{r}
+N=10^2
+S=rej_sampl(N,f2,g2,rg2)
+
+length(S)/N
+ggplot()+
+  geom_density(aes(x=S))+
+  geom_function(fun=f,col="blue")+
+  xlim(0,1)+xlab("X")+ylab("Density")+
+  theme_bw()
+```
+
+```{r}
+N=10^5
+S=rej_sampl(N,f2,g2,rg2)
+
+length(S)/N
+ggplot()+
+  geom_density(aes(x=S))+
+  geom_function(fun=f,col="blue")+
+  xlim(0,1)+xlab("X")+ylab("Density")+
+  theme_bw()
+```
+
+The acceptance ratios are 0.72 and 0.75, respectively. These are not great but it does show that 
+
+\pagebreak
+
+## Task 5
+
+
