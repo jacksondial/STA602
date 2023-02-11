@@ -2,7 +2,7 @@
 title: "Dial-Jackson-homework5"
 author: "Jackson Dial"
 date: '2023-02-07'
-output: html_document
+output: pdf_document
 editor_options: 
   chunk_output_type: console
 ---
@@ -21,6 +21,7 @@ library(ggplot2)
 ## A
 
 ![](Page1.jpg)
+
 ![](Page2.jpg)
 
 
