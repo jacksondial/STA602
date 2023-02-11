@@ -20,13 +20,25 @@ library(ggplot2)
 
 ## A
 
+![](Page1.jpg)
+![](Page2.jpg)
+
+
 \pagebreak
 
 ## B
 
+![](Page3.jpg)
+
+![](Page4.jpg)
+
 \pagebreak
 
 ## C
+
+![](Page5.jpg)
+
+![](Page6.jpg)
 
 \pagebreak
 
